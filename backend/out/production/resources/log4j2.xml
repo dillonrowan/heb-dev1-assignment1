@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN">
+    <appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <!--<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
+        </Console>
+
+        <File name="MyFile" fileName="logs/all.log" append="false">
+            <!--<PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
+        </File>
+        <!--<SMTP name="Mail" subject="assignment1 log" to="rowan.dillon@heb.com" from="test12345@test.com" smtpHost="exchange.heb.com" bufferSize=""50" smtpPassword="xx" ignoreExceptions="false"-->
+            <!--setpUsername="pm31121988" smtpProtocol="smtps">-->
+        <!--</SMTP>-->
+    </appenders>
+    <loggers>
+        <root level="debug">
+            <appender-ref ref="console" level="info"/>
+            <appender-ref ref="MyFile" level="info"/>
+            <!--<appender-ref ref="Mail" level="info"/>-->
+        </root>
+    </loggers>
+</configuration>
+
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<Configuration status="warn" name="MyApp" packages="">-->
+    <!--<Appenders>-->
+        <!--<File name="MyFile" fileName="logs/app.log">-->
+            <!--<PatternLayout>-->
+                <!--<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>-->
+            <!--</PatternLayout>-->
+        <!--</File>-->
+    <!--</Appenders>-->
+    <!--<Loggers>-->
+        <!--<Root level="error">-->
+            <!--<AppenderRef ref="MyFile"/>-->
+        <!--</Root>-->
+    <!--</Loggers>-->
+<!--</Configuration>-->
