@@ -1,10 +1,7 @@
 package database;
 
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.HashMap;
 
 public class DbCommunicator {
@@ -32,7 +29,7 @@ public class DbCommunicator {
         PreparedStatement query = getConnection().prepareStatement(sql);
         ResultSet result = query.executeQuery();
         try {
-            while(result.next()) {
+            while (result.next()) {
                 CustomerTable customer = new CustomerTable();
                 customer.setLastName(result.getString(1));
                 customer.setFirstName(result.getString(2));
@@ -43,18 +40,44 @@ public class DbCommunicator {
                 customer.setZip(result.getString(7));
                 customer.setLstEmailSent(result.getTimestamp(8)); //might be issue with updating this value
                 customer.setCustID(result.getInt(9));
-                customers.put(customer.getCustID(),customer);
+                customers.put(customer.getCustID(), customer);
             }
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
-            if(result != null) {result.close();}
-            if(result != null) {query.close();}
-            if(result != null) {connection.close();}
+            if (result != null) {
+                result.close();
+            }
+            if (query != null) {
+                query.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
         }
         return customers;
     }
 
+    public static void updateLstEmailSent(CustomerTable custData) throws Exception {
+        //System.out.println("NEW DATETIME: " + custData.getLstEmailSent());
+//System.out.println("DATETIME FORMAT:  " + sdf.format(custData.getLstEmailSent()));
+        try {
+            int custID = custData.getCustID();
+            //System.out.println("new datetime" + custData.getLstEmailSent());
+            String sqlUpdate = "UPDATE customers SET last_email_sent = " + "\'" + custData.getLstEmailSent() + "\'" + " where customer_id = " + custID;
+            System.out.println("SQL UPDATE QUERY: "+sqlUpdate);
+            PreparedStatement pstmt = getConnection().prepareStatement(sqlUpdate);
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
 
+        }
+
+
+    }
 }

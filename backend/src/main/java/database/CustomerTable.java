@@ -1,6 +1,9 @@
 package database;
 
+import java.util.Objects;
+
 public class CustomerTable {
+
     private String lastName;
     private String firstName;
     private String email;
@@ -8,7 +11,7 @@ public class CustomerTable {
     private String city;
     private String state;
     private String zip;
-    private java.util.Date lstEmailSent;
+    private java.sql.Timestamp lstEmailSent;
     private int custID;
 
     //Class Getters
@@ -40,13 +43,14 @@ public class CustomerTable {
         return zip;
     }
 
-    public java.util.Date getLstEmailSent() {
+    public java.sql.Timestamp getLstEmailSent() {
         return lstEmailSent;
     }
 
     public int getCustID() {
         return custID;
     }
+
 
     //Class Setters
     public void setLastName(String lastName) {
@@ -77,11 +81,44 @@ public class CustomerTable {
         this.zip = zip;
     }
 
-    public void setLstEmailSent(java.util.Date lstEmailSent) {
+    public void setLstEmailSent(java.sql.Timestamp lstEmailSent) {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        sdf.format(lstEmailSent);
         this.lstEmailSent = lstEmailSent;
     }
 
     public void setCustID(int custID) {
         this.custID = custID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomerTable that = (CustomerTable) o;
+        return custID == that.custID &&
+                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(firstName, that.firstName) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(address, that.address) &&
+                Objects.equals(city, that.city) &&
+                Objects.equals(state, that.state) &&
+                Objects.equals(zip, that.zip) &&
+                Objects.equals(lstEmailSent, that.lstEmailSent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lastName, firstName, email, address, city, state, zip, lstEmailSent, custID);
+    }
+
+    @Override
+    public String toString() {
+
+        return "Customer #" + getCustID() +'\n' +
+                getLastName() + " " + getFirstName() + '\n' +
+                getEmail() + '\n' +
+                getAddress() + '\n' +
+                getCity() + ", " + getState() + " " + getZip() + '\n';
     }
 }
