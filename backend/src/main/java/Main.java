@@ -17,9 +17,9 @@ public class Main {
         custWithTX = DbCommunicator.getCustomerTable("SELECT * FROM customers WHERE state = 'TX'");
         custNotTX = DbCommunicator.getCustomerTable("SELECT * FROM customers WHERE state != 'TX'");
 
-        Logging.printLog(custWithTX, custNotTX);
+        Logging.logCustomers(custWithTX, custNotTX);
 
-        Email.sendManager(custWithTX, custNotTX); //hashmaps are empty here
+        Email.sendManager(custWithTX, custNotTX);
 
     }
 
