@@ -7,9 +7,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashMap;
 
+
+/**
+ * Class that contains all methods used to pull and push data from database.
+ */
 public class DbCommunicator {
     private static final String DATABASE_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/customer_db?zeroDateTimeBehavior=convertToNull&verifyServerCertificate=false&useSSL=true";
@@ -30,6 +35,13 @@ public class DbCommunicator {
         return null;
     }
 
+    /**
+     * This method retrieves all customer data from the customers table. It will query Texas or Non-Texas customers
+     * depending on query.
+     * @param MySQL string to query customers from the customers table.
+     * @return HashMap of returned customers.
+     * @throws Exception when querying less than or more than 9 columns from a table.
+     */
     public static HashMap<Integer, CustomerTable> getCustomerTable(String sql) throws Exception {
         HashMap<Integer, CustomerTable> customers = new HashMap();
         PreparedStatement query = getConnection().prepareStatement(sql);
@@ -47,7 +59,7 @@ public class DbCommunicator {
                 customer.setZip(result.getString(7));
                 if(result.getTimestamp(8) == null) {
                     Calendar calendar = Calendar.getInstance();
-                    java.sql.Timestamp defaultTimestamp = new java.sql.Timestamp(calendar.getTime().getTime());
+                    Timestamp defaultTimestamp = new Timestamp(calendar.getTime().getTime());
                     customer.setLstEmailSent(defaultTimestamp);
                 } else {
                     customer.setLstEmailSent(result.getTimestamp(8));
@@ -60,19 +72,17 @@ public class DbCommunicator {
             System.out.println(e.getMessage());
             Logging.logError(e.toString());
         } finally {
-            if (result != null) {
-                result.close();
-            }
-            if (query != null) {
-                query.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
+            if (result != null) {result.close();}
+            if (connection != null) {connection.close();}
         }
         return customers;
     }
 
+    /**
+     * This method updates the database with the new last_email_sent value when the email to the manager is sent.
+     * @param custData Object containing updated last_email_sent value.
+     * @throws Exception When table does not have the customer's record to update or customer table is invalid.
+     */
     public static void updateLstEmailSent(CustomerTable custData) throws Exception {
         try {
             int custID = custData.getCustID();

@@ -13,11 +13,19 @@ import java.util.HashMap;
 import java.util.Properties;
 
 
+/**
+ * This class is used to generate and send emails to various recipients.
+ */
 public class Email {
 
    private static final Properties PROPERTIES = System.getProperties();
    private static final String SENDER = "rowan.dillon@heb.com";
 
+    /**
+     * @param custWithTX This HashMap contains all customers outside of Texas from the customers table. The kay is the
+     *                   customer_id.
+     * @param custNotTX This HashMap contains all customers from Texas from the customers table. The key is the customer_id.
+     */
     @SuppressWarnings("Duplicates")
     public static void sendManager(HashMap<Integer, CustomerTable> custWithTX, HashMap<Integer, CustomerTable> custNotTX) throws Exception {
         StringBuilder content = new StringBuilder();

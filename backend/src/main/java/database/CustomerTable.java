@@ -1,12 +1,8 @@
 package database;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+
 import java.util.Objects;
+import java.text.SimpleDateFormat;
 
 public class CustomerTable {
 
@@ -88,7 +84,7 @@ public class CustomerTable {
     }
 
     public void setLstEmailSent(java.sql.Timestamp lstEmailSent) {
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         sdf.format(lstEmailSent);
         this.lstEmailSent = lstEmailSent;
     }
