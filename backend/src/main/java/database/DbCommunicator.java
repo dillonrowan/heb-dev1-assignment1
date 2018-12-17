@@ -23,7 +23,12 @@ public class DbCommunicator {
 
     private static Connection connection = null;
 
-    //TODO see if better way to connect to DB
+    /**
+     * This method connects to the database using the DATABASE_URL defined above.
+     * @return connection to database if connected successfully, otherwise returns null
+     * @throws Exception If database it is connecting to is not jdbc:mysql://localhost:3306/customer_db with
+     * username = "root" and password = "willow123"
+     */
     private static Connection getConnection() throws Exception {
         try {
             connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
@@ -40,14 +45,16 @@ public class DbCommunicator {
      * depending on query.
      * @param MySQL string to query customers from the customers table.
      * @return HashMap of returned customers.
-     * @throws Exception when querying less than or more than 9 columns from a table.
+     * @throws Exception when querying less than or more than 9 columns from the table.
      */
     public static HashMap<Integer, CustomerTable> getCustomerTable(String sql) throws Exception {
         HashMap<Integer, CustomerTable> customers = new HashMap();
-        PreparedStatement query = getConnection().prepareStatement(sql);
-        ResultSet result = query.executeQuery();
+        PreparedStatement query = null;
+        ResultSet result = null;
 
         try {
+            query = getConnection().prepareStatement(sql);
+            result = query.executeQuery();
             while (result.next()) {
                 CustomerTable customer = new CustomerTable();
                 customer.setLastName(result.getString(1));
